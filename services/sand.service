@@ -1,0 +1,31 @@
+[Unit]
+Description=Project Sand - AR Sandbox
+After=network.target sand-display.service
+Wants=network.target
+Requires=sand-display.service
+
+[Service]
+Type=simple
+User=user
+WorkingDirectory=/home/user/project-sand
+Environment="PATH=/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+Environment="LD_LIBRARY_PATH=/usr/local/cuda/lib64"
+Environment="DISPLAY=:0"
+Environment="SAND_FULLSCREEN=1"
+ExecStartPre=/bin/sleep 2
+ExecStart=/usr/bin/python3 /home/user/project-sand/sand.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sand
+
+# Resource limits
+Nice=-5
+LimitNOFILE=4096
+
+# Watchdog: restart if sand.py locks up
+WatchdogSec=300
+
+[Install]
+WantedBy=multi-user.target

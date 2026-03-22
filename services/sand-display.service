@@ -1,0 +1,27 @@
+[Unit]
+Description=Minimal X server for Project Sand kiosk
+After=systemd-user-sessions.service
+Conflicts=gdm.service lightdm.service
+
+[Service]
+Type=simple
+User=root
+Environment="DISPLAY=:0"
+ExecStartPre=/bin/sh -c 'echo 1 > /sys/kernel/debug/tegra_hdmi/hotplug'
+ExecStartPre=/bin/sleep 2
+ExecStart=/usr/bin/Xorg :0 vt1 -keeptty -noreset -nolisten tcp
+ExecStartPost=/bin/sleep 2
+ExecStartPost=/usr/bin/xhost +local:
+ExecStartPost=/usr/bin/xhost +si:localuser:user
+ExecStartPost=/usr/bin/xset s off
+ExecStartPost=/usr/bin/xset -dpms
+ExecStartPost=/usr/bin/xset s noblank
+ExecStartPost=/usr/bin/xrandr --output HDMI-0 --mode 1280x720 --rate 60
+Restart=on-failure
+RestartSec=3
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sand-display
+
+[Install]
+WantedBy=multi-user.target
