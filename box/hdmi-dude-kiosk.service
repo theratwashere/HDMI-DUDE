@@ -1,0 +1,21 @@
+[Unit]
+Description=HDMI-DUDE Kiosk - Sand UI on HDMI display
+After=gdm.service
+Wants=gdm.service
+
+[Service]
+Type=forking
+User=chad
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/run/user/1000/gdm/Xauthority
+ExecStartPre=/bin/sleep 5
+ExecStart=/home/chad/kiosk.sh
+RemainAfterExit=yes
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=hdmi-dude-kiosk
+
+[Install]
+WantedBy=graphical.target

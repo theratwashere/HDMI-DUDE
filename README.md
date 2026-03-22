@@ -1,43 +1,23 @@
 # HDMI-DUDE
 
-Kiosk-mode HDMI output for Jetson Nano. Boots straight to fullscreen display, no desktop needed.
+Display kiosk configs for driving a 7" TFT (EMT713) in portrait mode.
 
-## What it does
+## Targets
 
-- Disables GDM/desktop
-- Starts a bare Xorg server on HDMI
-- Forces HDMI hotplug (Tegra workaround for late-connected displays)
-- Disables screensaver/DPMS
-- Launches Project Sand fullscreen at 1280x720
+### box (x86 Ubuntu 20.04)
+Chromium kiosk displaying The Dude web UI from jetson:8000, rotated portrait via fbdev.
 
-## Install
+- `box/xorg.conf` — fbdev with CW rotation, DPMS off
+- `box/hdmi-dude-kiosk.service` — systemd service for kiosk
+- `box/kiosk.sh` — launches chromium fullscreen
+- `box/kiosk.html` — iframe wrapper pointing at jetson:8000
 
-```bash
-git clone git@github.com:theratwashere/HDMI-DUDE.git
-cd HDMI-DUDE
-chmod +x install.sh
-./install.sh
-```
+### jet (Jetson Nano)
+Bare Xorg kiosk for Project Sand, no desktop.
 
-## Services
+- `services/sand-display.service` — Xorg + HDMI hotplug + xrandr
+- `services/sand.service` — Project Sand fullscreen
 
-| Service | Purpose |
-|---------|---------|
-| `sand-display` | Bare Xorg + HDMI hotplug + xrandr |
-| `sand` | Project Sand app (depends on sand-display) |
+## Display
 
-## Useful commands
-
-```bash
-# Status
-systemctl status sand-display sand
-
-# Logs
-journalctl -u sand -f
-
-# Restart
-sudo systemctl restart sand
-
-# Stop everything
-sudo systemctl stop sand sand-display
-```
+7" TFT Monitor, model EMT713, 1024x600 native, portrait orientation (600x1024).
