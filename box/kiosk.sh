@@ -25,16 +25,4 @@ killall chromium-browser 2>/dev/null
 sleep 1
 
 # Launch chromium in kiosk mode
-chromium-browser \
-    --kiosk \
-    --no-first-run \
-    --disable-infobars \
-    --disable-session-crashed-bubble \
-    --noerrdialogs \
-    --incognito \
-    --disable-translate \
-    --disable-features=TranslateUI \
-    --disable-gpu \
-    --window-size=600,1024 \
-    --window-position=0,0 \
-    'http://127.0.0.1:9090/' 2>/dev/null
+chromium-browser     --kiosk     --no-first-run     --disable-infobars     --disable-session-crashed-bubble     --noerrdialogs     --incognito     --disable-translate     --disable-features=TranslateUI     --disable-gpu     --window-size=600,1024     --window-position=0,0     --use-fake-ui-for-media-stream     --unsafely-treat-insecure-origin-as-secure=http://jetson:8000     'http://127.0.0.1:9090/' 2>/dev/null
